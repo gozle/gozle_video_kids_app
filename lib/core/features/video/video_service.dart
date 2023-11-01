@@ -32,8 +32,8 @@ class VideoService {
 
   static int findIndex(BuildContext context) {
     final videoState = context.read<VideoCubit>().state;
-    final state = context.read<HomeBloc>().state;
-    final pkies = state.videos.map((e) => e.pk).toList();
-    return pkies.indexOf(videoState.currentVideoPk!);
+    final homeState = context.read<HomeBloc>().state;
+    final pkies = homeState.videos.map((e) => e.pk).toList();
+    return pkies.indexOf(videoState.currentVideo!.pk);
   }
 }

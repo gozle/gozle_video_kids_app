@@ -12,7 +12,7 @@ import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 
 class VideoSkipButton extends StatefulWidget {
-  const VideoSkipButton({
+  VideoSkipButton({
     super.key,
     required this.forNext,
   });
@@ -33,12 +33,12 @@ class _VideoSkipButtonState extends State<VideoSkipButton> {
     super.dispose();
   }
 
-  bool skipped = false;
   late var index = VideoService.findIndex(context)..log(message: 'index');
+
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<VideoCubit>();
-    final state = cubit.state;
+    final videoCubit = context.read<VideoCubit>();
+    final state = videoCubit.state;
     final homeState = context.read<HomeBloc>().state;
     final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
     final isDisabled =
@@ -55,23 +55,18 @@ class _VideoSkipButtonState extends State<VideoSkipButton> {
             borderRadius: AppBorderRadiuses.border_50,
             onTap: () async {
               if (!state.isVisible) {
-                cubit.switchVisibility();
+                videoCubit.switchVisibility();
                 return;
               }
               if (isDisabled) return;
-              cubit.isSkipTap = true;
+              videoCubit.isSkipTap = true;
               if (widget.forNext) {
                 index++;
               } else {
                 index--;
               }
-              'before pop$skipped'.log();
-
-              context.pop();
-              'afetr pop$skipped'.log();
-
-              context.push(AppRoutes.videoScreen,
-                  extra: homeState.videos[index]);
+              final nextVideo = homeState.videos[index];
+              context.pushReplacement(AppRoutes.videoScreen, extra: nextVideo);
             },
             child: Icon(
               widget.forNext

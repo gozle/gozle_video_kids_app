@@ -15,16 +15,13 @@ import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
-import 'package:gozle_video_kids_v1/utilities/world_video_player/src/player_controller.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
 class GozleVideoKidsControllers extends StatefulWidget {
   const GozleVideoKidsControllers({
     super.key,
-    required this.videoController,
     required this.title,
   });
-  final WorldVideoPlayerController videoController;
   final String title;
   @override
   State<GozleVideoKidsControllers> createState() =>
@@ -50,6 +47,8 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
   }
 
   late final cubit = context.read<VideoCubit>();
+
+  late final videoController = cubit.videoController!;
   late AnimationController animController;
   @override
   Widget build(BuildContext context) {
@@ -80,15 +79,14 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
                     opacity: isNotVisibleAndLocked ? 1 : 0,
                     child: InkWrapper(
                       borderRadius: AppBorderRadiuses.border_50,
-                      onTap: () {
+                      onTap: () async {
                         if (state.isLocked) return;
                         if (!state.isVisible) {
                           cubit.switchVisibility();
                           return;
                         }
-                        StatusBarControl.setHidden(false).then((value) {
-                          context.pop();
-                        });
+                        await StatusBarControl.setHidden(false);
+                        context.pop();
                       },
                       child: Container(
                         height: 30.sp,
@@ -170,7 +168,7 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
                     animController: animController,
                     onTap: () => VideoService.playPause(
                       state,
-                      widget.videoController,
+                      videoController!,
                       cubit,
                       animController,
                     ),

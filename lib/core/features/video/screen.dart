@@ -1,10 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/progress_bar.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/video_controller.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/visibility_detector.dart';
+import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/src/controls/controls.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_player.dart';
 import 'package:status_bar_control/status_bar_control.dart';
@@ -15,6 +17,7 @@ class VideoScreen extends StatefulWidget {
     super.key,
     required this.model,
   });
+
   final HomeVideoModel model;
   @override
   State<VideoScreen> createState() => _VideoScreenState();
@@ -25,49 +28,66 @@ class _VideoScreenState extends State<VideoScreen> {
   void initState() {
     StatusBarControl.setHidden(true);
     Wakelock.enable();
-    cubit = context.read<VideoCubit>()..state.currentVideoPk = widget.model.pk;
-    cubit.isSkipTap = false;
-    videoController.init();
     super.initState();
   }
 
   @override
   void dispose() {
     Wakelock.disable();
-    videoController.dispose();
+    'dispose'.log();
+    cubit.dispose();
     super.dispose();
   }
 
-  late final VideoCubit cubit;
-  late final videoController = WorldVideoPlayerController.network(
-    url: widget.model.videoUrl,
-    aspectRatio: 16 / 9,
-    thumbnail: widget.model.image,
-    title: widget.model.title,
-  );
+  late final model = widget.model;
+  late VideoCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          WorldVideoPlayer(
-            expansionHeight: 9,
-            expansionWidth: 16,
-            controller: videoController,
-            controlsType: ControlsType.CUSTOM,
-            customControls: SizedBox(),
-          ),
-          VisibilityDetector(),
-          GozleVideoKidsControllers(
-            title: widget.model.title,
-            videoController: videoController,
-          ),
-          MyVideoProggresBar(
-            videoController: videoController,
-          ),
-        ],
+    return BlocProvider(
+      create: (context) => VideoCubit(model),
+      child: Builder(
+        builder: (context) {
+          cubit = context.read<VideoCubit>();
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                WorldVideoPlayer(
+                  expansionHeight: 9,
+                  expansionWidth: 16,
+                  controller: cubit.videoController,
+                  controlsType: ControlsType.CUSTOM,
+                  customControls: SizedBox(),
+                ),
+                VisibilityDetector(),
+                GozleVideoKidsControllers(title: model.title),
+                MyVideoProggresBar(),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class InitingWidget extends StatelessWidget {
+  const InitingWidget({
+    super.key,
+    required this.imagePath,
+  });
+  final String imagePath;
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: CachedNetworkImage(
+        imageUrl: imagePath..log(),
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) {
+          return SizedBox();
+        },
       ),
     );
   }

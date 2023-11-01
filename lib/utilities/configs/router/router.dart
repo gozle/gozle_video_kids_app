@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gozle_video_kids_v1/core/features/home/view/home_screen.dart';
 import 'package:gozle_video_kids_v1/core/features/video/screen.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/helpers/splash_screens/splash_screen.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/splash_screens/spalsh_screen_v2.dart';
 
 class AppRoutes {
@@ -42,8 +40,13 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.videoScreen,
       name: AppRoutes.videoScreen.toRouteName,
+      
+      builder: (context, state) {
+        final model = (state.extra as HomeVideoModel);
+        return VideoScreen(model: model);
+      },
       pageBuilder: (context, state) {
-        final model = state.extra as HomeVideoModel;
+        final model = (state.extra as HomeVideoModel);
 
         return CupertinoPage(
           child: VideoScreen(model: model),

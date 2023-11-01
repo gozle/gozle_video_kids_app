@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
@@ -19,6 +23,14 @@ class HomeVideoWidget extends StatefulWidget {
     this.model,
   });
   final HomeVideoModel? model;
+
+  static final _errorImages = [
+    AssetsPath.splashA4,
+    AssetsPath.splashDreamWorks,
+    AssetsPath.splashMasha,
+    AssetsPath.splashPixart,
+    AssetsPath.splashWalpDisnay,
+  ];
   @override
   State<HomeVideoWidget> createState() => _HomeVideoWidgetState();
 }
@@ -29,6 +41,7 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
     final model = widget.model;
     final isLoading = model == null;
     final textTheme = context.textTheme;
+
     return GestureDetector(
       onTap: () {
         if (isLoading || appRouter.location == AppRoutes.videoScreen) return;
@@ -57,7 +70,8 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                               fit: BoxFit.cover,
                               errorWidget: (context, url, error) {
                                 return Image.asset(
-                                  AssetsPath.splashScreen,
+                                  HomeVideoWidget
+                                      ._errorImages[Random().nextInt(5)],
                                   fit: BoxFit.cover,
                                 );
                               },

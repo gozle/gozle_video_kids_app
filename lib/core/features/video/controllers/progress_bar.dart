@@ -1,5 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +13,7 @@ import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_pla
 class MyVideoProggresBar extends StatefulWidget {
   const MyVideoProggresBar({
     super.key,
-    required this.videoController,
   });
-  final WorldVideoPlayerController videoController;
 
   @override
   State<MyVideoProggresBar> createState() => My_VideoProggresBarState();
@@ -25,26 +22,28 @@ class MyVideoProggresBar extends StatefulWidget {
 class My_VideoProggresBarState extends State<MyVideoProggresBar> {
   @override
   void initState() {
-    widget.videoController.addListener(listener);
+    cubit = context.read<VideoCubit>();
+    videoController = cubit.videoController!;
+    videoController.addListener(listener);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.videoController.removeListener(listener);
+    videoController.removeListener(listener);
     super.dispose();
   }
 
   void listener() {
-    position.value = widget.videoController.value.position;
-    final val = widget.videoController.videoPlayerController.value;
+    position.value = videoController.value.position;
+    final val = videoController.videoPlayerController.value;
     cubit.setPlaying(val.isPlaying);
-    cubit.setBuffering(val.isBuffering);
+    cubit.setBuffering(val.isBuffering..log());
   }
 
   final position = ValueNotifier<Duration>(Duration.zero);
-  late final cubit = context.read<VideoCubit>();
-
+  late final VideoCubit cubit;
+  late final WorldVideoPlayerController videoController;
   @override
   Widget build(BuildContext context) {
     final state = cubit.state;
@@ -67,7 +66,7 @@ class My_VideoProggresBarState extends State<MyVideoProggresBar> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.videoController.value.position.toTime} / ${widget.videoController.value.totalDuration.toTime}',
+                        '${videoController.value.position.toTime} / ${videoController.value.totalDuration.toTime}',
                         style: GoogleFonts.inter(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
@@ -81,13 +80,14 @@ class My_VideoProggresBarState extends State<MyVideoProggresBar> {
                           cubit.hideIcons();
                         },
                         onSeek: (value) {
-                          widget.videoController.seekTo(value);
+                          videoController.seekTo(value);
                         },
                         onDragStart: (details) {
                           cubit.hiddingId++;
                         },
                         onDragUpdate: (details) {
-                          if (state.isLocked) {
+                          if (state.isLocked ||
+                              !videoController.value.isReady) {
                             return;
                           }
                           if (!state.isVisible) {
@@ -95,12 +95,13 @@ class My_VideoProggresBarState extends State<MyVideoProggresBar> {
                             return;
                           }
                           'seek Update'.log();
-                          widget.videoController.seekTo(details.timeStamp);
+                          videoController.seekTo(details.timeStamp);
                         },
-                        thumbRadius: 10.sp,
+                        thumbRadius: 12.sp,
+                        thumbColor: Colors.transparent,
                         progress: val,
-                        total: widget.videoController.value.totalDuration,
-                        buffered: widget.videoController.value.buffered,
+                        total: videoController.value.totalDuration,
+                        buffered: videoController.value.buffered,
                         barCapShape: BarCapShape.round,
                         thumbGlowRadius: 0,
                         bufferedBarColor: Colors.grey.shade100,

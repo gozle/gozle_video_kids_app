@@ -6,23 +6,28 @@ class VideoState extends Equatable {
     required this.isVisible,
     required this.isBuffering,
     required this.isPlaying,
-    required this.currentVideoPk,
+    required this.currentVideo,
   });
   final bool isVisible;
   final bool isLocked;
   final bool isPlaying;
   final bool isBuffering;
-  int currentVideoPk;
+  final HomeVideoModel? currentVideo;
 
-  static final defState = VideoState(
-    currentVideoPk: 0,
-    isBuffering: true,
-    isLocked: false,
-    isVisible: true,
-    isPlaying: false,
-  );
+  static VideoState defState(HomeVideoModel model) => VideoState(
+        currentVideo: model,
+        isBuffering: true,
+        isLocked: false,
+        isVisible: true,
+        isPlaying: false,
+      );
 
   @override
-  List<Object?> get props =>
-      [isVisible, isLocked, isPlaying, isBuffering, currentVideoPk];
+  List<Object?> get props => [
+        isVisible,
+        isLocked,
+        isPlaying,
+        isBuffering,
+        currentVideo,
+      ];
 }

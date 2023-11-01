@@ -19,35 +19,39 @@ class PlayPauseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<VideoCubit>().state;
-    final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
-    return Container(
-      height: 75.sp,
-      width: 75.sp,
-      margin: EdgeInsets.symmetric(horizontal: 60.w),
-      child: FittedBox(
-        alignment: Alignment.center,
-        child: state.isBuffering
-            ? Padding(
-                padding: AppPaddings.all_6,
-                child: CircularProgressIndicator(
-                  color: AppColors.appBlue,
-                ),
-              )
-            : AnimatedOpacity(
-                duration: AppDurations.duration_150ms,
-                opacity: isNotVisibleAndLocked ? 1 : 0,
-                child: InkWrapper(
-                  borderRadius: AppBorderRadiuses.border_50,
-                  onTap: onTap,
-                  child: AnimatedIcon(
-                    progress: animController,
-                    icon: AnimatedIcons.pause_play,
-                    color: Colors.white,
+    return BlocBuilder<VideoCubit, VideoState>(
+      builder: (context, state) {
+        final state = context.read<VideoCubit>().state;
+        final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
+        return Container(
+          height: 75.sp,
+          width: 75.sp,
+          margin: EdgeInsets.symmetric(horizontal: 60.w),
+          child: FittedBox(
+            alignment: Alignment.center,
+            child: state.isBuffering
+                ? Padding(
+                    padding: AppPaddings.all_6,
+                    child: CircularProgressIndicator(
+                      color: AppColors.appBlue,
+                    ),
+                  )
+                : AnimatedOpacity(
+                    duration: AppDurations.duration_150ms,
+                    opacity: isNotVisibleAndLocked ? 1 : 0,
+                    child: InkWrapper(
+                      borderRadius: AppBorderRadiuses.border_50,
+                      onTap: onTap,
+                      child: AnimatedIcon(
+                        progress: animController,
+                        icon: AnimatedIcons.pause_play,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

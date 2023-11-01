@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/progress_bar.dart';
@@ -19,6 +18,8 @@ class VideoScreen extends StatefulWidget {
   });
 
   final HomeVideoModel model;
+
+  static final val = ValueNotifier<HomeVideoModel?>(null);
   @override
   State<VideoScreen> createState() => _VideoScreenState();
 }
@@ -26,6 +27,7 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
+    VideoScreen.val.value = widget.model;
     StatusBarControl.setHidden(true);
     Wakelock.enable();
     super.initState();
@@ -34,7 +36,6 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void dispose() {
     Wakelock.disable();
-    'dispose'.log();
     cubit.dispose();
     super.dispose();
   }
@@ -45,8 +46,8 @@ class _VideoScreenState extends State<VideoScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => VideoCubit(model),
-      child: Builder(
-        builder: (context) {
+      child: BlocBuilder<VideoCubit, VideoState>(
+        builder: (context, state) {
           cubit = context.read<VideoCubit>();
           return Scaffold(
             backgroundColor: Colors.black,
@@ -61,32 +62,11 @@ class _VideoScreenState extends State<VideoScreen> {
                   customControls: SizedBox(),
                 ),
                 VisibilityDetector(),
-                GozleVideoKidsControllers(title: model.title),
+                GozleVideoKidsControllers(),
                 MyVideoProggresBar(),
               ],
             ),
           );
-        },
-      ),
-    );
-  }
-}
-
-class InitingWidget extends StatelessWidget {
-  const InitingWidget({
-    super.key,
-    required this.imagePath,
-  });
-  final String imagePath;
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: CachedNetworkImage(
-        imageUrl: imagePath..log(),
-        fit: BoxFit.cover,
-        errorWidget: (context, url, error) {
-          return SizedBox();
         },
       ),
     );

@@ -8,7 +8,6 @@ import 'package:gozle_video_kids_v1/core/features/video/controllers/play_pause_b
 import 'package:gozle_video_kids_v1/core/features/video/controllers/skip_button.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/unlock_widget.dart';
 import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
-import 'package:gozle_video_kids_v1/core/features/video/video_service.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/assets_path.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
@@ -17,41 +16,16 @@ import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
-class GozleVideoKidsControllers extends StatefulWidget {
+class GozleVideoKidsControllers extends StatelessWidget {
   const GozleVideoKidsControllers({
     super.key,
-    required this.title,
   });
-  final String title;
-  @override
-  State<GozleVideoKidsControllers> createState() =>
-      _GozleVideoKidsControllersState();
-}
 
-class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
-    with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    animController = AnimationController(
-      vsync: this,
-      duration: AppDurations.duration_150ms,
-    );
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animController.dispose();
-    super.dispose();
-  }
-
-  late final cubit = context.read<VideoCubit>();
-
-  late final videoController = cubit.videoController!;
-  late AnimationController animController;
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<VideoCubit>();
+    final videoController = cubit.videoController;
+
     return BlocBuilder<VideoCubit, VideoState>(
       bloc: cubit,
       builder: (context, state) {
@@ -95,7 +69,6 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
                         child: FittedBox(
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            // height: 28.h,
                             color: Colors.white,
                           ),
                         ),
@@ -108,7 +81,7 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
                       duration: AppDurations.duration_150ms,
                       opacity: isNotVisibleAndLocked ? 1 : 0,
                       child: Text(
-                        widget.title,
+                        state.currentVideo.title,
                         style: GoogleFonts.inter(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
@@ -164,15 +137,7 @@ class _GozleVideoKidsControllersState extends State<GozleVideoKidsControllers>
                   VideoSkipButton(
                     forNext: false,
                   ),
-                  PlayPauseButton(
-                    animController: animController,
-                    onTap: () => VideoService.playPause(
-                      state,
-                      videoController!,
-                      cubit,
-                      animController,
-                    ),
-                  ),
+                  PlayPauseButton(),
                   VideoSkipButton(
                     forNext: true,
                   ),

@@ -12,7 +12,7 @@ class VideoState extends Equatable {
   final bool isLocked;
   final bool isPlaying;
   final bool isBuffering;
-  final HomeVideoModel? currentVideo;
+  final HomeVideoModel currentVideo;
 
   static VideoState defState(HomeVideoModel model) => VideoState(
         currentVideo: model,

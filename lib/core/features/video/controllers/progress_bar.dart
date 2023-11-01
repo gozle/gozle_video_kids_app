@@ -8,58 +8,30 @@ import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_player.dart';
 
-class MyVideoProggresBar extends StatefulWidget {
+class MyVideoProggresBar extends StatelessWidget {
   const MyVideoProggresBar({
     super.key,
   });
 
   @override
-  State<MyVideoProggresBar> createState() => My_VideoProggresBarState();
-}
-
-class My_VideoProggresBarState extends State<MyVideoProggresBar> {
-  @override
-  void initState() {
-    cubit = context.read<VideoCubit>();
-    videoController = cubit.videoController!;
-    videoController.addListener(listener);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    videoController.removeListener(listener);
-    super.dispose();
-  }
-
-  void listener() {
-    position.value = videoController.value.position;
-    final val = videoController.videoPlayerController.value;
-    cubit.setPlaying(val.isPlaying);
-    cubit.setBuffering(val.isBuffering..log());
-  }
-
-  final position = ValueNotifier<Duration>(Duration.zero);
-  late final VideoCubit cubit;
-  late final WorldVideoPlayerController videoController;
-  @override
   Widget build(BuildContext context) {
-    final state = cubit.state;
+    final VideoCubit cubit = context.read<VideoCubit>();
+    final videoController = cubit.videoController;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 32),
       child: BlocBuilder<VideoCubit, VideoState>(
         bloc: cubit,
         builder: (context, state) {
           final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
+          'mainRebuild'.log();
           return AnimatedOpacity(
             duration: AppDurations.duration_150ms,
             opacity: isNotVisibleAndLocked ? 1 : 0,
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: ValueListenableBuilder(
-                valueListenable: position,
+                valueListenable: cubit.position,
                 builder: (context, val, __) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -99,7 +71,7 @@ class My_VideoProggresBarState extends State<MyVideoProggresBar> {
                         },
                         thumbRadius: 12.sp,
                         thumbColor: Colors.transparent,
-                        progress: val,
+                        progress: videoController.value.position,
                         total: videoController.value.totalDuration,
                         buffered: videoController.value.buffered,
                         barCapShape: BarCapShape.round,

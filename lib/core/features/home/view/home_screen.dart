@@ -6,8 +6,6 @@ import 'package:gozle_video_kids_v1/core/features/home/view/home_app_bar.dart';
 import 'package:gozle_video_kids_v1/core/features/home/view/home_body.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
-import 'package:status_bar_control/status_bar_control.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,9 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   late HomeBloc bloc;
+
+  // для этих целей существует BlocListener
   void listener() {
-    if (scrollController.position.pixels >=
-            (scrollController.position.maxScrollExtent - 30.h) &&
+    if (scrollController.position.pixels >= (scrollController.position.maxScrollExtent - 30.h) &&
         scrollController.position.isScrollingNotifier.value) {
       final state = bloc.state;
       if (state.apiState != HomeAPIState.succses || state.isLastPage) {
@@ -45,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           HomeBody(controller: scrollController),
+          // помести это в обычный app bar и картинку в title + убери titleSpacing:
           const HomeAppBar(),
         ],
       ),

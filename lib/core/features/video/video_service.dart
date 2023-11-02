@@ -34,6 +34,6 @@ class VideoService {
     final videoState = context.read<VideoCubit>().state;
     final homeState = context.read<HomeBloc>().state;
     final pkies = homeState.videos.map((e) => e.pk).toList();
-    return pkies.indexOf(videoState.currentVideo!.pk);
+    return pkies.indexOf(videoState.currentVideo.pk);
   }
 }

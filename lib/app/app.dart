@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
 import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
-import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/theme/theme.dart';

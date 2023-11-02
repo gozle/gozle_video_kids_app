@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final textStyle = context.textTheme.logoStyle;
     final imageHeight =
-        AppCalculator.getTextHeight(textStyle!.fontSize!) + 30.sp;
+        AppCalculator.getTextHeight(textStyle.fontSize!) + 30.sp;
     return SafeArea(
       bottom: false,
       child: Container(

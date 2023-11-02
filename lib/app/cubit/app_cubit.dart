@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+// не забывай удалять ненужные импорты
 import 'package:gozle_video_kids_v1/app/injection/setup.dart';
 import 'package:gozle_video_kids_v1/core/data/local_data/local_storage.dart';
 import 'package:gozle_video_kids_v1/core/data/local_data/local_storage_impl.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 
 part 'app_state.dart';
+
+// друг посмотри пожалуйста clean code архитектуру
+// как и что в папках должно лежать
 
 class AppCubit extends Cubit<AppState> {
   AppCubit()
@@ -51,6 +54,5 @@ class AppCubit extends Cubit<AppState> {
     ));
   }
 }
-
 
 // dart run build_runner build --delete-conflicting-outputs

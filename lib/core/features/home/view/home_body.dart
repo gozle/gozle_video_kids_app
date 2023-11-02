@@ -15,13 +15,18 @@ class HomeBody extends StatelessWidget {
     super.key,
     required this.controller,
   });
+  // зачем ты передаешь этот контроллер
   final ScrollController controller;
 
   @override
   Widget build(BuildContext context) {
+    // так не делают
     final bloc = context.read<HomeBloc>();
+
     var previouseState = HomeAPIState.init;
+
     final topPad = MediaQuery.paddingOf(context).top;
+
     return Padding(
       padding: EdgeInsets.only(top: topPad + 65.h),
       child: BlocBuilder<HomeBloc, HomeState>(
@@ -36,7 +41,7 @@ class HomeBody extends StatelessWidget {
                 bloc.init();
               },
             );
-
+          // посмотри freezedbloc и не мучайся с этим
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(
@@ -62,8 +67,7 @@ class HomeBody extends StatelessWidget {
                         color: AppColors.appred,
                       ),
                     ).toSliver(),
-                  if (previouseState == HomeAPIState.errorMore &&
-                      state.apiState == HomeAPIState.loadingMore)
+                  if (previouseState == HomeAPIState.errorMore && state.apiState == HomeAPIState.loadingMore)
                     SizedBox(
                       height: 200.h,
                     ).toSliverBox,
@@ -101,6 +105,7 @@ class HomeErrorWidget extends StatelessWidget {
             height: 92.h,
           ),
           Text(
+            // локализация
             'Связь с сервером устанавливалась слишком долго, время ожидания истекло.',
             style: textTheme.tryAgainTitle,
             textAlign: TextAlign.center,
@@ -109,6 +114,7 @@ class HomeErrorWidget extends StatelessWidget {
             onPressed: onTap,
             style: theme.textButtonTheme.style,
             child: Text(
+              // локализация
               'Повторить',
               style: TextStyle(
                 color: Color(0xFFEE0000),

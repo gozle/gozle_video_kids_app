@@ -22,7 +22,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "tm.gozle.video.kids"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -42,7 +42,7 @@ android {
         applicationId "tm.gozle.video.kids"
         
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0.0"
     }

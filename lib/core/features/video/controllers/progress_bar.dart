@@ -52,14 +52,23 @@ class MyVideoProggresBar extends StatelessWidget {
                           cubit.hideIcons();
                         },
                         onSeek: (value) {
+                          cubit.hiddingId++;
+                          if (state.isLocked) {
+                            cubit.switchVisibility();
+                            return;
+                          }
+                          if (!state.isVisible) {
+                            cubit.switchVisibility(dontHide: true);
+                            return;
+                          }
                           videoController.seekTo(value);
                         },
                         onDragStart: (details) {
                           cubit.hiddingId++;
                         },
                         onDragUpdate: (details) {
-                          if (state.isLocked ||
-                              !videoController.value.isReady) {
+                          if (state.isLocked) {
+                            cubit.switchVisibility();
                             return;
                           }
                           if (!state.isVisible) {

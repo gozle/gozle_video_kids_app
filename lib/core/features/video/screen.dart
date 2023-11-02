@@ -5,7 +5,6 @@ import 'package:gozle_video_kids_v1/core/features/video/controllers/video_contro
 import 'package:gozle_video_kids_v1/core/features/video/controllers/visibility_detector.dart';
 import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
-import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/src/controls/controls.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_player.dart';
 import 'package:status_bar_control/status_bar_control.dart';

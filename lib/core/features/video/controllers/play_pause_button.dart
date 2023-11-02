@@ -27,10 +27,12 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<VideoCubit>();
+
     return BlocBuilder<VideoCubit, VideoState>(
       builder: (context, state) {
         final state = context.read<VideoCubit>().state;
         final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
+        
         return Container(
           height: 75.sp,
           width: 75.sp,

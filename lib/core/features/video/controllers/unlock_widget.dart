@@ -45,7 +45,7 @@ class UnlockWidget extends StatelessWidget {
               SizedBox(
                 width: 404.w,
                 child: Text(
-                  'Дважды нажмите,  чтобы разблокировать',
+                  'Дважды нажмите, чтобы разблокировать',
                   style: GoogleFonts.inter(
                     fontSize: 19.sp,
                     fontWeight: FontWeight.w600,

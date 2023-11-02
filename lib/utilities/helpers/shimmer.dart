@@ -6,13 +6,14 @@ import 'package:shimmer/shimmer.dart';
 
 /// Place holder
 class MyShimerPlaceHolder extends StatelessWidget {
-  const MyShimerPlaceHolder(
-      {super.key,
-      this.height,
-      this.radius,
-      this.margin,
-      this.child,
-      this.width});
+  const MyShimerPlaceHolder({
+    super.key,
+    this.height,
+    this.radius,
+    this.margin,
+    this.child,
+    this.width,
+  });
   final double? height;
   final double? width;
   final BorderRadius? radius;

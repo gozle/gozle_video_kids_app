@@ -8,7 +8,6 @@ import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeBody extends StatelessWidget {
@@ -22,9 +21,9 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<HomeBloc>();
     var previouseState = HomeAPIState.init;
-
+    final topPad = MediaQuery.paddingOf(context).top;
     return Padding(
-      padding: EdgeInsets.only(top: AppCalculator.topPad! + 65.h),
+      padding: EdgeInsets.only(top: topPad + 65.h),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
           previouseState = previous.apiState;

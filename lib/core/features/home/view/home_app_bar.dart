@@ -17,16 +17,13 @@ class _HomeAppBarState extends State<HomeAppBar> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme.appBarTheme;
-    final topPad = AppCalculator.topPad ?? 0;
     return Container(
-      // margin: EdgeInsets.only(),
       padding: EdgeInsets.only(
         left: 39.w,
         right: 39.w,
-        top: (topPad..log()) ?? 0,
       ),
       width: double.infinity,
-      height: 65.h + (topPad),
+      height: 65.h,
       color: theme.backgroundColor,
       child: Row(
         mainAxisSize: MainAxisSize.max,

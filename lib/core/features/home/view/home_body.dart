@@ -15,20 +15,16 @@ class HomeBody extends StatelessWidget {
     super.key,
     required this.controller,
   });
-  // зачем ты передаешь этот контроллер
   final ScrollController controller;
 
   @override
   Widget build(BuildContext context) {
-    // так не делают
     final bloc = context.read<HomeBloc>();
 
     var previouseState = HomeAPIState.init;
-
-    final topPad = MediaQuery.paddingOf(context).top;
-
+//padding couse of body and app bar in stack. 65 height of app bar
     return Padding(
-      padding: EdgeInsets.only(top: topPad + 65.h),
+      padding: EdgeInsets.only(top: 65.h),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
           previouseState = previous.apiState;
@@ -45,9 +41,10 @@ class HomeBody extends StatelessWidget {
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(
-                child: CircularProgressIndicator(
-              color: AppColors.appred,
-            ));
+              child: CircularProgressIndicator(
+                color: AppColors.appred,
+              ),
+            );
           return RefreshIndicator(
             onRefresh: () async {
               bloc.init(forRefresh: true);
@@ -67,7 +64,8 @@ class HomeBody extends StatelessWidget {
                         color: AppColors.appred,
                       ),
                     ).toSliver(),
-                  if (previouseState == HomeAPIState.errorMore && state.apiState == HomeAPIState.loadingMore)
+                  if (previouseState == HomeAPIState.errorMore &&
+                      state.apiState == HomeAPIState.loadingMore)
                     SizedBox(
                       height: 200.h,
                     ).toSliverBox,

@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // для этих целей существует BlocListener
   void listener() {
-    if (scrollController.position.pixels >= (scrollController.position.maxScrollExtent - 30.h) &&
+    if (scrollController.position.pixels >=
+            (scrollController.position.maxScrollExtent - 30.h) &&
         scrollController.position.isScrollingNotifier.value) {
       final state = bloc.state;
       if (state.apiState != HomeAPIState.succses || state.isLastPage) {
@@ -37,16 +38,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final scrollController = ScrollController();
-
+  late final topPad = MediaQuery.paddingOf(context).top;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          HomeBody(controller: scrollController),
-          // помести это в обычный app bar и картинку в title + убери titleSpacing:
-          const HomeAppBar(),
-        ],
+    return Container(
+      color: context.theme.scaffoldBackgroundColor,
+      padding: EdgeInsets.only(top: topPad),
+      // safe are
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: Scaffold(
+          // this cuose of after "VideoScreen" dispose status bar height constantly changes
+          body: Stack(
+            children: [
+              HomeBody(controller: scrollController),
+              const HomeAppBar(),
+            ],
+          ),
+        ),
       ),
     );
   }

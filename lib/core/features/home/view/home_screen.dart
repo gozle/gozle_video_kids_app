@@ -6,8 +6,6 @@ import 'package:gozle_video_kids_v1/core/features/home/view/home_app_bar.dart';
 import 'package:gozle_video_kids_v1/core/features/home/view/home_body.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
-import 'package:status_bar_control/status_bar_control.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   late HomeBloc bloc;
+
+  // для этих целей существует BlocListener
   void listener() {
     if (scrollController.position.pixels >=
             (scrollController.position.maxScrollExtent - 30.h) &&
@@ -38,15 +38,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final scrollController = ScrollController();
-
+  late final topPad = MediaQuery.paddingOf(context).top;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          HomeBody(controller: scrollController),
-          const HomeAppBar(),
-        ],
+    return Container(
+      color: context.theme.scaffoldBackgroundColor,
+      padding: EdgeInsets.only(top: topPad),
+      // safe are
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: Scaffold(
+          // this cuose of after "VideoScreen" dispose status bar height constantly changes
+          body: Stack(
+            children: [
+              HomeBody(controller: scrollController),
+              const HomeAppBar(),
+            ],
+          ),
+        ),
       ),
     );
   }

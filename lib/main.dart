@@ -8,4 +8,5 @@ Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();
   SystemChromeHelper.setOrentationHoriz();
   runApp(const GozleVideoKidsApp());
+
 }

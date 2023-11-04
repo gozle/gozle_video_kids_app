@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:status_bar_control/status_bar_control.dart';
 
 class SystemChromeHelper {
   static Future<void> changeStatusBarColor(Color color) async {
@@ -23,5 +24,20 @@ class SystemChromeHelper {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+  }
+
+  static Future<void> switchOnOverlays() async {
+    await StatusBarControl.setHidden(false);
+
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: SystemUiOverlay.values,
+    );
+  }
+
+  static Future<void> switchOffOverlays() async {
+    await StatusBarControl.setHidden(true);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: List.empty());
   }
 }

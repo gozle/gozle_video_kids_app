@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
 import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
 import 'package:gozle_video_kids_v1/core/features/video/video_service.dart';
-import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 
-class VideoSkipButton extends StatefulWidget {
+class VideoSkipButton extends StatelessWidget {
   VideoSkipButton({
     super.key,
     required this.forNext,
@@ -19,31 +17,14 @@ class VideoSkipButton extends StatefulWidget {
   final bool forNext;
 
   @override
-  State<VideoSkipButton> createState() => _VideoSkipButtonState();
-}
-
-class _VideoSkipButtonState extends State<VideoSkipButton> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  late var index = VideoService.findIndex(context)..log(message: 'index');
-
-  @override
   Widget build(BuildContext context) {
     final videoCubit = context.read<VideoCubit>();
     final state = videoCubit.state;
     final homeState = context.read<HomeBloc>().state;
     final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
-    final isDisabled =
-        widget.forNext && index == (homeState.videos.length - 1) ||
-            !widget.forNext && index == 0;
+    int index = VideoService.findIndex(context)..log(message: 'index');
+    final isDisabled = forNext && index == (homeState.videos.length - 1) ||
+        !forNext && index == 0;
     return SizedBox.square(
       dimension: 50.sp,
       child: FittedBox(
@@ -60,18 +41,16 @@ class _VideoSkipButtonState extends State<VideoSkipButton> {
               }
               if (isDisabled) return;
               videoCubit.isSkipTap = true;
-              if (widget.forNext) {
+              if (forNext) {
                 index++;
               } else {
                 index--;
               }
               final nextVideo = homeState.videos[index];
-              context.pushReplacement(AppRoutes.videoScreen, extra: nextVideo);
+              videoCubit.reInit(nextVideo);
             },
             child: Icon(
-              widget.forNext
-                  ? Icons.skip_next_sharp
-                  : Icons.skip_previous_sharp,
+              forNext ? Icons.skip_next_sharp : Icons.skip_previous_sharp,
               color: isDisabled ? Colors.black38 : Colors.white,
             ),
           ),

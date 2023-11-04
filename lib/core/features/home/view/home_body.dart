@@ -8,7 +8,6 @@ import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
-import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeBody extends StatelessWidget {
@@ -21,10 +20,11 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<HomeBloc>();
-    var previouseState = HomeAPIState.init;
 
+    var previouseState = HomeAPIState.init;
+//padding couse of body and app bar in stack. 65 height of app bar
     return Padding(
-      padding: EdgeInsets.only(top: AppCalculator.topPad! + 65.h),
+      padding: EdgeInsets.only(top: 65.h),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
           previouseState = previous.apiState;
@@ -37,13 +37,13 @@ class HomeBody extends StatelessWidget {
                 bloc.init();
               },
             );
-
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(
-                child: CircularProgressIndicator(
-              color: AppColors.appred,
-            ));
+              child: CircularProgressIndicator(
+                color: AppColors.appred,
+              ),
+            );
           return RefreshIndicator(
             onRefresh: () async {
               bloc.init(forRefresh: true);
@@ -102,6 +102,7 @@ class HomeErrorWidget extends StatelessWidget {
             height: 92.h,
           ),
           Text(
+            // локализация
             'Связь с сервером устанавливалась слишком долго, время ожидания истекло.',
             style: textTheme.tryAgainTitle,
             textAlign: TextAlign.center,
@@ -110,6 +111,7 @@ class HomeErrorWidget extends StatelessWidget {
             onPressed: onTap,
             style: theme.textButtonTheme.style,
             child: Text(
+              // локализация
               'Повторить',
               style: TextStyle(
                 color: Color(0xFFEE0000),

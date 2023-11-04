@@ -17,7 +17,7 @@ class HomeRepoImpl extends HomeRepo with DioClientMixin {
     if (response.success) {
       final nextPage = int.tryParse(
           Uri.parse(response.data[APIKeys.next] as String? ?? '')
-                  .queryParameters[APIKeys.page] as String? ??
+                  .queryParameters[APIKeys.page] ??
               '');
       final data =
           ((response.data as Map<String, dynamic>)[APIKeys.results] as List)

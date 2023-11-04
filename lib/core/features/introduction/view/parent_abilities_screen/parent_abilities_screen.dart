@@ -19,7 +19,7 @@ class ParentAbilitiesScreen extends StatelessWidget {
         AppSpacing.vertical_60,
         Text(
           l10n.parentsAbility,
-          style: theme.introductionTitle!,
+          style: theme.introductionTitle,
           textAlign: TextAlign.center,
         ),
         AppSpacing.vertical_30,

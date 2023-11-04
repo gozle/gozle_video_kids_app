@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
+import 'package:gozle_video_kids_v1/utilities/services/system_chrome_helper/system_chrome_helper.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_player.dart';
 
 part 'video_state.dart';
@@ -12,13 +14,17 @@ class VideoCubit extends Cubit<VideoState> {
   final HomeVideoModel model;
   int hiddingId = 0;
   bool isSkipTap = false;
+  final position = ValueNotifier<Duration>(Duration.zero);
+
   late WorldVideoPlayerController videoController =
       WorldVideoPlayerController.network(
     url: model.videoUrl,
     aspectRatio: 16 / 9,
     thumbnail: model.image,
     title: model.title,
-  )..init();
+  )
+        ..init()
+        ..videoPlayerController.addListener(listener);
 
   Future<void> hideIcons() async {
     hiddingId++;
@@ -28,7 +34,7 @@ class VideoCubit extends Cubit<VideoState> {
       return;
     }
     if (isClosed) return;
-    emit(
+    myEmit(
       VideoState(
         currentVideo: state.currentVideo,
         isBuffering: state.isBuffering,
@@ -40,9 +46,11 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   void switchVisibility({bool? dontHide}) {
-    if (isClosed) return;
     hiddingId++;
-    emit(
+    if (!state.isVisible) {
+      SystemChromeHelper.switchOffOverlays();
+    }
+    myEmit(
       VideoState(
         currentVideo: state.currentVideo,
         isBuffering: state.isBuffering,
@@ -56,7 +64,7 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   void switchLock() {
-    emit(
+    myEmit(
       VideoState(
         currentVideo: state.currentVideo,
         isBuffering: state.isBuffering,
@@ -67,22 +75,25 @@ class VideoCubit extends Cubit<VideoState> {
     );
   }
 
-  void setPlaying(bool isPlaying) {
-    if (isPlaying == state.isPlaying)
-      return emit(
-        VideoState(
-          currentVideo: state.currentVideo,
-          isBuffering: state.isBuffering,
-          isPlaying: isPlaying,
-          isLocked: state.isLocked,
-          isVisible: state.isVisible,
-        ),
-      );
+  void setPlaying() {
+    final videoConVal = videoController.videoPlayerController.value;
+    final isPlaying = videoConVal.isInitialized &&
+        !videoConVal.isBuffering &&
+        videoConVal.isPlaying;
+    return myEmit(
+      VideoState(
+        currentVideo: state.currentVideo,
+        isBuffering: state.isBuffering,
+        isPlaying: isPlaying,
+        isLocked: state.isLocked,
+        isVisible: state.isVisible,
+      ),
+    );
   }
 
   void setBuffering(bool val) {
     if (val == state.isBuffering) return;
-    emit(
+    myEmit(
       VideoState(
         currentVideo: state.currentVideo,
         isLocked: state.isLocked,
@@ -95,8 +106,44 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> dispose() async {
     'Idsposing'.log();
+    videoController.removeListener(listener);
     await videoController.pause();
     await videoController.dispose();
     // this.close();
+  }
+
+  Future<void> reInit(HomeVideoModel nextVideo) async {
+    videoController.videoPlayerController.removeListener(listener);
+    videoController.dispose();
+    // videoController = null;
+    videoController = WorldVideoPlayerController.network(
+      url: nextVideo.videoUrl,
+      aspectRatio: 16 / 9,
+      thumbnail: nextVideo.image,
+      title: nextVideo.title,
+    )..init();
+    videoController.videoPlayerController.addListener(listener);
+    myEmit(
+      VideoState(
+        isLocked: state.isLocked,
+        isVisible: state.isVisible,
+        isBuffering: state.isBuffering,
+        isPlaying: state.isPlaying,
+        currentVideo: nextVideo,
+      ),
+    );
+  }
+
+  void listener() {
+    final mainVideoCon = videoController.videoPlayerController;
+    final val = mainVideoCon.value;
+    position.value = mainVideoCon.value.position;
+    this.setPlaying();
+    this.setBuffering(val.isBuffering..log());
+  }
+
+  void myEmit(VideoState state) {
+    if (isClosed) return;
+    emit(state);
   }
 }

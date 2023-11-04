@@ -2,27 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gozle_video_kids_v1/core/features/video/cubit/video_cubit.dart';
+import 'package:gozle_video_kids_v1/core/features/video/video_service.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 
-class PlayPauseButton extends StatelessWidget {
+class PlayPauseButton extends StatefulWidget {
   const PlayPauseButton({
     super.key,
-    required this.onTap,
-    required this.animController,
   });
-  final VoidCallback onTap;
-  final AnimationController animController;
 
+  @override
+  State<PlayPauseButton> createState() => _PlayPauseButtonState();
+}
+
+class _PlayPauseButtonState extends State<PlayPauseButton>
+    with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void listener() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
+  late final animController = AnimationController(
+    vsync: this,
+    duration: AppDurations.duration_150ms,
+  );
+
+  late final VideoCubit cubit = context.read<VideoCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoCubit, VideoState>(
       builder: (context, state) {
         final state = context.read<VideoCubit>().state;
         final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
+        if (!state.isPlaying) {
+          animController.reverse();
+        } else {
+          animController.forward();
+        }
         return Container(
           height: 75.sp,
           width: 75.sp,
@@ -41,10 +71,11 @@ class PlayPauseButton extends StatelessWidget {
                     opacity: isNotVisibleAndLocked ? 1 : 0,
                     child: InkWrapper(
                       borderRadius: AppBorderRadiuses.border_50,
-                      onTap: onTap,
+                      onTap: () => VideoService.playPause(
+                          state, cubit.videoController, cubit),
                       child: AnimatedIcon(
                         progress: animController,
-                        icon: AnimatedIcons.pause_play,
+                        icon: AnimatedIcons.play_pause,
                         color: Colors.white,
                       ),
                     ),

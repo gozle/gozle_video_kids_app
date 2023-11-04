@@ -1,6 +1,7 @@
-package com.example.gozle_video_kids_v1
+package tm.gozle.video.kids
 
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
+
 }

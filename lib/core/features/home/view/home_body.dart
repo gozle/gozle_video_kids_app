@@ -37,7 +37,6 @@ class HomeBody extends StatelessWidget {
                 bloc.init();
               },
             );
-          // посмотри freezedbloc и не мучайся с этим
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(

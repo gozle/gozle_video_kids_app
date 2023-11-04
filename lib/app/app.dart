@@ -16,6 +16,9 @@ class GozleVideoKidsApp extends StatefulWidget {
 }
 
 class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
+
+  //! Refactoring, dark theme
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(

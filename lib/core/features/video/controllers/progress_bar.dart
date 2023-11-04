@@ -24,7 +24,6 @@ class MyVideoProggresBar extends StatelessWidget {
         bloc: cubit,
         builder: (context, state) {
           final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
-          'mainRebuild'.log();
           return AnimatedOpacity(
             duration: AppDurations.duration_150ms,
             opacity: isNotVisibleAndLocked ? 1 : 0,
@@ -75,7 +74,6 @@ class MyVideoProggresBar extends StatelessWidget {
                             cubit.switchVisibility(dontHide: true);
                             return;
                           }
-                          'seek Update'.log();
                           videoController.seekTo(details.timeStamp);
                         },
                         thumbRadius: 12.sp,

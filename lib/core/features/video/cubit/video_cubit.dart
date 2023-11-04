@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
+import 'package:gozle_video_kids_v1/utilities/services/system_chrome_helper/system_chrome_helper.dart';
 import 'package:gozle_video_kids_v1/utilities/world_video_player/world_video_player.dart';
 
 part 'video_state.dart';
@@ -45,8 +46,10 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   void switchVisibility({bool? dontHide}) {
-    if (isClosed) return;
     hiddingId++;
+    if (!state.isVisible) {
+      SystemChromeHelper.switchOffOverlays();
+    }
     myEmit(
       VideoState(
         currentVideo: state.currentVideo,
@@ -72,17 +75,20 @@ class VideoCubit extends Cubit<VideoState> {
     );
   }
 
-  void setPlaying(bool isPlaying) {
-    if (isPlaying == state.isPlaying)
-      return myEmit(
-        VideoState(
-          currentVideo: state.currentVideo,
-          isBuffering: state.isBuffering,
-          isPlaying: isPlaying,
-          isLocked: state.isLocked,
-          isVisible: state.isVisible,
-        ),
-      );
+  void setPlaying() {
+    final videoConVal = videoController.videoPlayerController.value;
+    final isPlaying = videoConVal.isInitialized &&
+        !videoConVal.isBuffering &&
+        videoConVal.isPlaying;
+    return myEmit(
+      VideoState(
+        currentVideo: state.currentVideo,
+        isBuffering: state.isBuffering,
+        isPlaying: isPlaying,
+        isLocked: state.isLocked,
+        isVisible: state.isVisible,
+      ),
+    );
   }
 
   void setBuffering(bool val) {
@@ -132,7 +138,7 @@ class VideoCubit extends Cubit<VideoState> {
     final mainVideoCon = videoController.videoPlayerController;
     final val = mainVideoCon.value;
     position.value = mainVideoCon.value.position;
-    this.setPlaying(val.isPlaying);
+    this.setPlaying();
     this.setBuffering(val.isBuffering..log());
   }
 

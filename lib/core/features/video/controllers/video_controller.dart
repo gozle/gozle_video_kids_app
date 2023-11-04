@@ -24,8 +24,6 @@ class GozleVideoKidsControllers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<VideoCubit>();
-    final videoController = cubit.videoController;
-
     return BlocBuilder<VideoCubit, VideoState>(
       bloc: cubit,
       builder: (context, state) {

@@ -26,19 +26,6 @@ extension ContextExtensions on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this)!;
   ThemeData get theme => Theme.of(this);
   MyTextTheme get textTheme => Theme.of(this).extension<MyTextTheme>()!;
-
-  // Widget responsiveResolve({required Widget phone, required Widget tablet}) {
-  // switch (AppCalculator.deviceSize.width) {
-  //   case <= 600:
-  //     'this is phone'.log();
-  //     return phone;
-  //   case >= 600:
-  //     'this is tablet'.log();
-  //     return tablet;
-  //   default:
-  //     return tablet;
-  // }
-  // }
 }
 
 extension DurationExtensions on Duration {
@@ -93,12 +80,5 @@ class MyBehavior extends ScrollBehavior {
   Widget buildOverscrollIndicator(
       BuildContext context, Widget child, ScrollableDetails details) {
     return child;
-  }
-}
-
-extension DynamicExtension on dynamic {
-  dynamic get toMaterialStateProperty {
-    final type = this.runtimeType;
-    return MaterialStateProperty.resolveWith((states) => this);
   }
 }

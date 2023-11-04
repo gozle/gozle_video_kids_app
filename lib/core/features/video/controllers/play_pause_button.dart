@@ -7,6 +7,7 @@ import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 
 class PlayPauseButton extends StatefulWidget {
@@ -20,19 +21,38 @@ class PlayPauseButton extends StatefulWidget {
 
 class _PlayPauseButtonState extends State<PlayPauseButton>
     with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void listener() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
   late final animController = AnimationController(
     vsync: this,
     duration: AppDurations.duration_150ms,
   );
+
+  late final VideoCubit cubit = context.read<VideoCubit>();
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<VideoCubit>();
-
     return BlocBuilder<VideoCubit, VideoState>(
       builder: (context, state) {
         final state = context.read<VideoCubit>().state;
         final isNotVisibleAndLocked = state.isVisible && !state.isLocked;
-        
+        if (!state.isPlaying) {
+          animController.reverse();
+        } else {
+          animController.forward();
+        }
         return Container(
           height: 75.sp,
           width: 75.sp,
@@ -52,14 +72,10 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
                     child: InkWrapper(
                       borderRadius: AppBorderRadiuses.border_50,
                       onTap: () => VideoService.playPause(
-                        state,
-                        cubit.videoController,
-                        cubit,
-                        animController,
-                      ),
+                          state, cubit.videoController, cubit),
                       child: AnimatedIcon(
                         progress: animController,
-                        icon: AnimatedIcons.pause_play,
+                        icon: AnimatedIcons.play_pause,
                         color: Colors.white,
                       ),
                     ),

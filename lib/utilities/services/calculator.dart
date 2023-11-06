@@ -61,7 +61,6 @@ class AppCalculator {
   static const phoneDesingeSize = Size(932, 430);
   static const tabletDesingeSize = Size(1194, 834);
   static double? topPad;
-  // static Size deviceSize = Size(0, 0);
 
   static void init(BuildContext context) {
     if (topPad != null && topPad != 0.0) {
@@ -69,8 +68,6 @@ class AppCalculator {
     }
     'TopPad init'.log();
     final padding = MediaQuery.paddingOf(context).top;
-    final size = MediaQuery.sizeOf(context);
     topPad = padding;
-    // deviceSize = size;
   }
 }

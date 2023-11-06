@@ -7,7 +7,6 @@ import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
-import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/ink_wrapper.dart';
 
 class PlayPauseButton extends StatefulWidget {

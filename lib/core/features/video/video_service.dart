@@ -18,12 +18,10 @@ class VideoService {
       cubit.switchVisibility();
       return;
     }
-    bool newIsPplaying = false;
     if (videoController.videoPlayerController.value.isPlaying) {
       await videoController.pause();
     } else {
       await videoController.resume();
-      newIsPplaying = true;
     }
     cubit.setPlaying();
   }

@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
+import 'package:gozle_video_kids_v1/utilities/configs/theme/my_text_theme.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/colors.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/borders.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
@@ -35,11 +38,22 @@ class HomeVideoWidget extends StatefulWidget {
 
 class _HomeVideoWidgetState extends State<HomeVideoWidget> {
   @override
-  Widget build(BuildContext context) {
-    final model = widget.model;
-    final isLoading = model == null;
-    final textTheme = context.textTheme;
+  void initState() {
+    context.read<AppCubit>().stream.listen((event) {
+      textTheme = AppCalculator.isDarkMode()
+          ? MyTextTheme.darkTheme()
+          : MyTextTheme.lightTheme();
+      setState(() {});
+    });
+    super.initState();
+  }
 
+  late MyTextTheme textTheme = context.textTheme;
+  late final model = widget.model;
+  late final isLoading = model == null;
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (isLoading || appRouter.location == AppRoutes.videoScreen) return;
@@ -64,7 +78,7 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                       child: isLoading
                           ? MyShimerPlaceHolder()
                           : CachedNetworkImage(
-                              imageUrl: model.image,
+                              imageUrl: model!.image,
                               fit: BoxFit.cover,
                               errorWidget: (context, url, error) {
                                 return Image.asset(
@@ -94,7 +108,7 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 11.w, vertical: 4.h),
                         child: Text(
-                          model.duration.durationFromSeconds.toTime,
+                          model!.duration.durationFromSeconds.toTime,
                           style: textTheme.homeVideoWigetDuration,
                         ),
                       ),
@@ -113,7 +127,7 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                     ),
                   )
                 : Text(
-                    model.title,
+                    model!.title,
                     style: textTheme.homeVideoWidgetLabel,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

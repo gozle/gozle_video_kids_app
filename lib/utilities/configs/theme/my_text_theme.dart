@@ -66,6 +66,51 @@ class MyTextTheme extends ThemeExtension<MyTextTheme> {
         ),
       );
 
+  //! dark theme
+  factory MyTextTheme.darkTheme() => MyTextTheme(
+        tryAgainTitle: GoogleFonts.inter(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+        splashBeta: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFFFFFFFF),
+        ),
+        homeVideoWigetDuration: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFFFFFFFF),
+        ),
+        homeVideoWidgetLabel: GoogleFonts.inter(
+          fontSize: 15.sp,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        //todo impl
+        introductionSubTitle: GoogleFonts.inter(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+        logoStyle: GoogleFonts.luckiestGuy(
+          fontSize: 36.sp,
+          fontWeight: FontWeight.w400,
+          color: Colors.white,
+        ),
+        introductionTitle: GoogleFonts.inter(
+          fontSize: 30.sp,
+          fontWeight: FontWeight.w700,
+          color: Colors.black,
+        ),
+        myRedButton: GoogleFonts.inter(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFFFFFFFF),
+        ),
+      );
+
   @override
   MyTextTheme lerp(MyTextTheme? other, double t) {
     return MyTextTheme.lightTheme();

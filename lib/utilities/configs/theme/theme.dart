@@ -64,4 +64,61 @@ class AppTheme {
       MyTextTheme.lightTheme(),
     ],
   );
+  final darkTheme = ThemeData(
+    //!
+    scaffoldBackgroundColor: Color(0xFF111111),
+    primaryColor: AppColors.appred,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.black,
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        overlayColor: MaterialStateColor.resolveWith(
+            (states) => AppColors.appred.withOpacity(0.2)),
+        textStyle: MaterialStateTextStyle.resolveWith(
+          (states) => GoogleFonts.inter(
+            fontSize: 23.sp,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFFEE0000),
+          ),
+        ),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        padding: MaterialStatePropertyAll(
+            AppPaddings.vertic_10.add(AppPaddings.horiz_10)),
+        alignment: Alignment.center,
+        backgroundColor: MaterialStatePropertyAll(AppColors.appred),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: AppBorderRadiuses.border_6,
+          ),
+        ),
+      ),
+    ),
+    //!
+    brightness: Brightness.dark,
+    fontFamily: GoogleFonts.inter().fontFamily,
+    //!
+    popupMenuTheme: PopupMenuThemeData(
+      labelTextStyle: MaterialStatePropertyAll(
+        GoogleFonts.inter(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: Colors.grey.shade200,
+        ),
+      ),
+      textStyle: GoogleFonts.inter(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: AppColors.grey,
+      ),
+      color: AppColors.black,
+    ),
+    extensions: [
+      MyTextTheme.darkTheme(),
+    ],
+  );
 }

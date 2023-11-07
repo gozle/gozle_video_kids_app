@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
+import 'package:gozle_video_kids_v1/app/test_screen.dart';
 import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
 import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
@@ -16,9 +17,7 @@ class GozleVideoKidsApp extends StatefulWidget {
 }
 
 class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
-
   //! Refactoring, dark theme
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -29,21 +28,21 @@ class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
     );
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => AppCubit()..init()),
         BlocProvider(create: (context) => HomeBloc()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
+          final themeInstance = AppTheme();
           return MaterialApp.router(
             title: 'Gozle Video Kids',
             supportedLocales: AppLocalizations.supportedLocales,
             routerConfig: appRouter,
             locale: Locale(state.lang),
             debugShowCheckedModeBanner: false,
-            themeMode: ThemeMode.light,
-            theme: AppTheme().lightTheme,
-            // themeMode: state.themeMode,
-            // darkTheme: Apptheme.darkTheme,
+            themeMode: state.themeMode,
+            theme: themeInstance.lightTheme,
+            darkTheme: themeInstance.darkTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             builder: (context, child) {
               return Navigator(
@@ -51,6 +50,7 @@ class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
                   return MaterialPageRoute(
                     builder: (context) {
                       AppCalculator.init(context);
+                      // return TestScreen();
                       return child!;
                     },
                   );

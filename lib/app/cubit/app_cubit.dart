@@ -6,6 +6,7 @@ import 'package:gozle_video_kids_v1/app/injection/setup.dart';
 import 'package:gozle_video_kids_v1/core/data/local_data/local_storage.dart';
 import 'package:gozle_video_kids_v1/core/data/local_data/local_storage_impl.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 
 part 'app_state.dart';
 
@@ -47,11 +48,13 @@ class AppCubit extends Cubit<AppState> {
     emit(AppState(state: APIState.loading));
     final lang = await _localStorage.getLang();
     final themeMode = await _localStorage.getThemeMode();
-    emit(AppState(
-      lang: lang,
-      themeMode: themeMode,
-      state: APIState.succses,
-    ));
+    emit(
+      AppState(
+        lang: lang,
+        themeMode: (themeMode)..log(message: 'Current theme mode'),
+        state: APIState.succses,
+      ),
+    );
   }
 }
 

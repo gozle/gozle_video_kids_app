@@ -10,18 +10,41 @@ import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({
-    super.key,
-    required this.controller,
-  });
-  final ScrollController controller;
+class HomeBody extends StatefulWidget {
+  const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  @override
+  void initState() {
+    bloc = context.read<HomeBloc>()..log();
+    scrollController.addListener(listener);
+    super.initState();
+  }
+
+  late HomeBloc bloc;
+
+  final scrollController = ScrollController();
+  void listener() {
+    if (scrollController.position.pixels >=
+            (scrollController.position.maxScrollExtent - 30.h) &&
+        scrollController.position.isScrollingNotifier.value) {
+      final state = bloc.state;
+      if (state.apiState != HomeAPIState.succses || state.isLastPage) {
+        return;
+      }
+      bloc.loadMore();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<HomeBloc>();
-
     var previouseState = HomeAPIState.init;
+    'body rebuild'.log();
 //padding couse of body and app bar in stack. 65 height of app bar
     return Padding(
       padding: EdgeInsets.only(top: 65.h),
@@ -51,7 +74,7 @@ class HomeBody extends StatelessWidget {
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: CustomScrollView(
-                controller: controller,
+                controller: scrollController,
                 slivers: [
                   HomeProductBuilder(
                     modelList: state.videos,

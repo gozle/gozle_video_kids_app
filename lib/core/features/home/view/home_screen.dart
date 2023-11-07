@@ -15,29 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    bloc = context.read<HomeBloc>()..log();
-    scrollController.addListener(listener);
-    super.initState();
-  }
-
-  late HomeBloc bloc;
-
-  // для этих целей существует BlocListener
-  void listener() {
-    if (scrollController.position.pixels >=
-            (scrollController.position.maxScrollExtent - 30.h) &&
-        scrollController.position.isScrollingNotifier.value) {
-      final state = bloc.state;
-      if (state.apiState != HomeAPIState.succses || state.isLastPage) {
-        return;
-      }
-      bloc.loadMore();
-    }
-  }
-
-  final scrollController = ScrollController();
   late final topPad = MediaQuery.paddingOf(context).top;
   @override
   Widget build(BuildContext context) {
@@ -52,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // this cuose of after "VideoScreen" dispose status bar height constantly changes
           body: Stack(
             children: [
-              HomeBody(controller: scrollController),
+              const HomeBody(),
               const HomeAppBar(),
             ],
           ),

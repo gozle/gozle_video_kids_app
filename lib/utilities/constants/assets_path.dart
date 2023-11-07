@@ -1,28 +1,40 @@
-class AssetsPath {
-  static final splashScreen = 'assets/images/splash.webp';
-  static final gozleIcon = 'assets/icons/gozle_icon.svg';
-  static final gozleIconRed = 'assets/icons/gozle_icon_red.svg';
-  static final welcomeScreenImage = 'assets/images/welcome_image.png';
-  static final parentsAbilitiesImage =
-      'assets/images/parents_abilities_image.png';
-  static final getBirthDateImage = 'assets/images/get_birth_date_image.png';
-  static final fullLogo = 'assets/images/full_logo.svg';
-  static final searchIcon = 'assets/icons/search.svg';
-  static final lockIcon = 'assets/icons/lock_icon.svg';
-  static final unlockIcon = 'assets/icons/un_lock_icon.svg';
+import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 
-  static final popIcon = 'assets/icons/pop.svg';
-  static final lockLottieIcon = 'assets/icons/lotties/lock_icon_white.json';
-  static final noWiFi = 'assets/icons/errors/no_wi-fi.svg';
+class AssetsPath {
+  static const splashScreen = 'assets/images/splash.webp';
+  static const gozleIcon = 'assets/icons/gozle_icon.svg';
+  static const gozleIconRed = 'assets/icons/gozle_icon_red.svg';
+  static const welcomeScreenImage = 'assets/images/welcome_image.png';
+  static const parentsAbilitiesImage =
+      'assets/images/parents_abilities_image.png';
+  static const getBirthDateImage = 'assets/images/get_birth_date_image.png';
+  static String get fullLogo {
+    /// reversed cause names are wrong
+    return !AppCalculator.isDarkMode()
+        ? 'assets/images/full_logo_dark.svg'
+        : 'assets/images/full_logo_light.svg';
+  }
+
+  static const searchIcon = 'assets/icons/search.svg';
+  static const lockIcon = 'assets/icons/lock_icon.svg';
+  static const unlockIcon = 'assets/icons/un_lock_icon.svg';
+
+  static const popIcon = 'assets/icons/pop.svg';
+  static const lockLottieIcon = 'assets/icons/lotties/lock_icon_white.json';
+  static const noWiFi = 'assets/icons/errors/no_wi-fi.svg';
 
   //! Splash screen images
-  static final splashWalpDisnay =
+  static const splashWalpDisnay =
       'assets/images/splash_images/walp_disnay.webp';
-  static final splashPixart = 'assets/images/splash_images/pixart.webp';
-  static final splashMasha = 'assets/images/splash_images/masha_medved.webp';
-  static final splashDreamWorks =
+  static const splashPixart = 'assets/images/splash_images/pixart.webp';
+  static const splashMasha = 'assets/images/splash_images/masha_medved.webp';
+  static const splashDreamWorks =
       'assets/images/splash_images/dream_works.webp';
-  static final splashCheburashka =
+  static const splashCheburashka =
       'assets/images/splash_images/cheburashka.webp';
-  static final splashA4 = 'assets/images/splash_images/a4.webp';
+  static const splashA4 = 'assets/images/splash_images/a4.webp';
+
+  //! lotties
+  static const lightThemeLottie = 'assets/icons/lotties/light_mode.json';
+  static const darkThemeLottie = 'assets/icons/lotties/dark_mode.json';
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
+import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 
 class AppCalculator {
@@ -72,5 +75,15 @@ class AppCalculator {
     final size = MediaQuery.sizeOf(context);
     topPad = padding;
     // deviceSize = size;
+  }
+
+  static bool isDarkMode() {
+    final context = appRouter.currentContext;
+    final appCubit = context.read<AppCubit>();
+    if (appCubit.state.themeMode == ThemeMode.system) {
+      return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    }
+
+    return appCubit.state.themeMode == ThemeMode.dark;
   }
 }

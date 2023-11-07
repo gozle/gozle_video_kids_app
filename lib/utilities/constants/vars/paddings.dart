@@ -45,6 +45,7 @@ class AppPaddings {
   static EdgeInsets get all_4 => EdgeInsets.all(4.sp);
   static EdgeInsets get all_5 => EdgeInsets.all(5.sp);
   static EdgeInsets get all_6 => EdgeInsets.all(6.sp);
+  static EdgeInsets get all_8 => EdgeInsets.all(8.sp);
 
   static EdgeInsets get horiz_37 => EdgeInsets.symmetric(horizontal: 27.w);
   static EdgeInsets get horiz_12 => EdgeInsets.symmetric(horizontal: 12.w);

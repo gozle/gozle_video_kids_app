@@ -5,9 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
 import 'package:gozle_video_kids_v1/app/test_screen.dart';
 import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/theme/theme.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 
 class GozleVideoKidsApp extends StatefulWidget {
   const GozleVideoKidsApp({super.key});
@@ -33,6 +35,7 @@ class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
+          ResponsiveHelper.init(context);
           final themeInstance = AppTheme();
           return MaterialApp.router(
             title: 'Gozle Video Kids',

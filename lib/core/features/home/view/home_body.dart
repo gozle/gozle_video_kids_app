@@ -9,6 +9,7 @@ import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 
 class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
@@ -30,7 +31,8 @@ class _HomeBodyState extends State<HomeBody> {
   final scrollController = ScrollController();
   void listener() {
     if (scrollController.position.pixels >=
-            (scrollController.position.maxScrollExtent - 30.h) &&
+            (scrollController.position.maxScrollExtent -
+                ResponsiveHelper.solve(30.h, 50.h)) &&
         scrollController.position.isScrollingNotifier.value) {
       final state = bloc.state;
       if (state.apiState != HomeAPIState.succses || state.isLastPage) {
@@ -47,7 +49,7 @@ class _HomeBodyState extends State<HomeBody> {
     'body rebuild'.log();
 //padding couse of body and app bar in stack. 65 height of app bar
     return Padding(
-      padding: EdgeInsets.only(top: 65.h),
+      padding: EdgeInsets.only(top: ResponsiveHelper.solve(65.h, 50.h)),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
           previouseState = previous.apiState;
@@ -63,8 +65,11 @@ class _HomeBodyState extends State<HomeBody> {
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.appred,
+              child: SizedBox.square(
+                dimension: ResponsiveHelper.solve(25.sp, 35.sp),
+                child: CircularProgressIndicator(
+                  color: AppColors.appred,
+                ),
               ),
             );
           return RefreshIndicator(
@@ -82,8 +87,11 @@ class _HomeBodyState extends State<HomeBody> {
                   AppSpacing.vertical_20.toSliverBox,
                   if (state.apiState == HomeAPIState.loadingMore)
                     Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.appred,
+                      child: SizedBox.square(
+                        dimension: ResponsiveHelper.solve(25.sp, 35.sp),
+                        child: CircularProgressIndicator(
+                          color: AppColors.appred,
+                        ),
                       ),
                     ).toSliver(),
                   if (previouseState == HomeAPIState.errorMore &&
@@ -92,9 +100,11 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 200.h,
                     ).toSliverBox,
                   if (state.apiState == HomeAPIState.errorMore)
-                    HomeErrorWidget(onTap: () {
-                      bloc.loadMore();
-                    }).toSliverBox,
+                    HomeErrorWidget(
+                      onTap: () {
+                        bloc.loadMore();
+                      },
+                    ).toSliverBox,
                 ],
               ),
             ),

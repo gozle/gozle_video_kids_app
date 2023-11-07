@@ -77,9 +77,9 @@ class AppCalculator {
   static bool isDarkMode() {
     final context = appRouter.currentContext;
     final appCubit = context.read<AppCubit>();
-    if (appCubit.state.themeMode == ThemeMode.system) {
-      return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
-    }
+    // if (appCubit.state.themeMode == ThemeMode.system) {
+    //   return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    // }
 
     return appCubit.state.themeMode == ThemeMode.dark;
   }

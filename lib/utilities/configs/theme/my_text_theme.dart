@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 
 class MyTextTheme extends ThemeExtension<MyTextTheme> {
   MyTextTheme({
@@ -35,12 +36,12 @@ class MyTextTheme extends ThemeExtension<MyTextTheme> {
           color: Color(0xFFFFFFFF),
         ),
         homeVideoWigetDuration: GoogleFonts.inter(
-          fontSize: 12.sp,
+          fontSize: ResponsiveHelper.solve(12.sp, 9.sp),
           fontWeight: FontWeight.w600,
           color: Color(0xFFFFFFFF),
         ),
         homeVideoWidgetLabel: GoogleFonts.inter(
-          fontSize: 15.sp,
+          fontSize: ResponsiveHelper.solve(15.sp, 12.sp),
           fontWeight: FontWeight.w600,
           color: Color(0xFF000000),
         ),
@@ -79,12 +80,12 @@ class MyTextTheme extends ThemeExtension<MyTextTheme> {
           color: Color(0xFFFFFFFF),
         ),
         homeVideoWigetDuration: GoogleFonts.inter(
-          fontSize: 12.sp,
+          fontSize: ResponsiveHelper.solve(12.sp, 9.sp),
           fontWeight: FontWeight.w600,
           color: Color(0xFFFFFFFF),
         ),
         homeVideoWidgetLabel: GoogleFonts.inter(
-          fontSize: 15.sp,
+          fontSize: ResponsiveHelper.solve(15.sp, 12.sp),
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),

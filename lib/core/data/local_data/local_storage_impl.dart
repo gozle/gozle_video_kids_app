@@ -17,7 +17,7 @@ class LocalStorageImpl extends LocalStorage {
     if (theme != null) {
       return ThemeMode.values.firstWhere((element) => element.name == theme);
     }
-    return ThemeMode.system;
+    return ThemeMode.light;
   }
 
   void saveLang(String lang) async {

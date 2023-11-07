@@ -50,7 +50,6 @@ class _GozleVideoKidsAppState extends State<GozleVideoKidsApp> {
                   return MaterialPageRoute(
                     builder: (context) {
                       AppCalculator.init(context);
-                      // return TestScreen();
                       return child!;
                     },
                   );

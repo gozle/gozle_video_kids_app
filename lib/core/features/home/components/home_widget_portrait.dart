@@ -39,12 +39,6 @@ class HomeVideoWidget extends StatefulWidget {
 class _HomeVideoWidgetState extends State<HomeVideoWidget> {
   @override
   void initState() {
-    context.read<AppCubit>().stream.listen((event) {
-      textTheme = AppCalculator.isDarkMode()
-          ? MyTextTheme.darkTheme()
-          : MyTextTheme.lightTheme();
-      setState(() {});
-    });
     super.initState();
   }
 
@@ -54,85 +48,93 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (isLoading || appRouter.location == AppRoutes.videoScreen) return;
-        context.push(AppRoutes.videoScreen, extra: model);
+    return BlocListener<AppCubit, AppState>(
+      listener: (context, state) {
+        textTheme = AppCalculator.isDarkMode()
+            ? MyTextTheme.darkTheme()
+            : MyTextTheme.lightTheme();
+        setState(() {});
       },
-      child: Padding(
-        padding: AppPaddings.horiz_6.copyWith(top: 14.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                SizedBox(
-                  width: double.maxFinite,
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: ClipRRect(
-                      borderRadius: AppBorderRadiuses.border_15,
-                      child: isLoading
-                          ? MyShimerPlaceHolder()
-                          : CachedNetworkImage(
-                              imageUrl: model!.image,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) {
-                                return Image.asset(
-                                  HomeVideoWidget
-                                      ._errorImages[Random().nextInt(5)],
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                              placeholder: (context, url) {
-                                return MyShimerPlaceHolder();
-                              },
-                            ),
-                    ),
-                  ),
-                ),
-                if (!isLoading)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.black28,
-                          borderRadius: AppBorderRadiuses.border_5,
-                        ),
-                        margin: EdgeInsets.only(bottom: 11.h, right: 15.w),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 11.w, vertical: 4.h),
-                        child: Text(
-                          model!.duration.durationFromSeconds.toTime,
-                          style: textTheme.homeVideoWigetDuration,
-                        ),
+      child: GestureDetector(
+        onTap: () {
+          if (isLoading || appRouter.location == AppRoutes.videoScreen) return;
+          context.push(AppRoutes.videoScreen, extra: model);
+        },
+        child: Padding(
+          padding: AppPaddings.horiz_6.copyWith(top: 14.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: ClipRRect(
+                        borderRadius: AppBorderRadiuses.border_15,
+                        child: isLoading
+                            ? MyShimerPlaceHolder()
+                            : CachedNetworkImage(
+                                imageUrl: model!.image,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return Image.asset(
+                                    HomeVideoWidget
+                                        ._errorImages[Random().nextInt(5)],
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                                placeholder: (context, url) {
+                                  return MyShimerPlaceHolder();
+                                },
+                              ),
                       ),
-                    ],
-                  )
-              ],
-            ),
-            AppSpacing.vertical_12,
-            isLoading
-                ? MyShimerPlaceHolder(
-                    radius: AppBorderRadiuses.border_6,
-                    width: double.infinity,
-                    margin: AppPaddings.bottom_4,
-                    height: AppCalculator.getTextHeight(
-                      textTheme.homeVideoWidgetLabel.fontSize!,
                     ),
-                  )
-                : Text(
-                    model!.title,
-                    style: textTheme.homeVideoWidgetLabel,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
-          ],
+                  if (!isLoading)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.black28,
+                            borderRadius: AppBorderRadiuses.border_5,
+                          ),
+                          margin: EdgeInsets.only(bottom: 11.h, right: 15.w),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 11.w, vertical: 4.h),
+                          child: Text(
+                            model!.duration.durationFromSeconds.toTime,
+                            style: textTheme.homeVideoWigetDuration,
+                          ),
+                        ),
+                      ],
+                    )
+                ],
+              ),
+              AppSpacing.vertical_12,
+              isLoading
+                  ? MyShimerPlaceHolder(
+                      radius: AppBorderRadiuses.border_6,
+                      width: double.infinity,
+                      margin: AppPaddings.bottom_4,
+                      height: AppCalculator.getTextHeight(
+                        textTheme.homeVideoWidgetLabel.fontSize!,
+                      ),
+                    )
+                  : Text(
+                      model!.title,
+                      style: textTheme.homeVideoWidgetLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+            ],
+          ),
         ),
       ),
     );

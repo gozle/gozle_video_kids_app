@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
 import 'package:gozle_video_kids_v1/core/features/home/view/home_app_bar.dart';
 import 'package:gozle_video_kids_v1/core/features/home/view/home_body.dart';
-import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 
 class HomeScreen extends StatefulWidget {

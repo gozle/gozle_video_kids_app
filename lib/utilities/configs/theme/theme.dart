@@ -60,9 +60,6 @@ class AppTheme {
       ),
       color: AppColors.grey,
     ),
-    extensions: [
-      MyTextTheme.lightTheme(),
-    ],
   );
   final darkTheme = ThemeData(
     //!
@@ -117,8 +114,5 @@ class AppTheme {
       ),
       color: AppColors.black,
     ),
-    extensions: [
-      MyTextTheme.darkTheme(),
-    ],
   );
 }

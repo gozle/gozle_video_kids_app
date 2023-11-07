@@ -40,7 +40,6 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.videoScreen,
       name: AppRoutes.videoScreen.toRouteName,
-      
       builder: (context, state) {
         final model = (state.extra as HomeVideoModel);
         return VideoScreen(model: model);

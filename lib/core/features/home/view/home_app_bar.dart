@@ -3,18 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
-import 'package:gozle_video_kids_v1/app/test_screen.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/assets_path.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/paddings.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 import 'package:lottie/lottie.dart';
 
-class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key});
 
-  Size get preferredSize => Size.fromHeight(65.h);
   @override
   State<HomeAppBar> createState() => _HomeAppBarState();
 }
@@ -29,7 +28,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
         right: 39.w,
       ),
       width: double.infinity,
-      height: 65.h,
+      height: ResponsiveHelper.solve(65.h, 50.h),
       color: theme.backgroundColor,
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -38,7 +37,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
         children: [
           SvgPicture.asset(
             AssetsPath.fullLogo,
-            height: 42.h,
+            height: ResponsiveHelper.solve(42.h, 32.h),
             alignment: Alignment.centerLeft,
           ),
           ToggleThemeIcon(),
@@ -73,6 +72,7 @@ class _ToggleThemeIconState extends State<ToggleThemeIcon>
   @override
   Widget build(BuildContext context) {
     toggleAnim();
+    final dimension = ResponsiveHelper.solve(50.sp, 37.sp);
     return InkWell(
       onTap: () {
         (context.read<AppCubit>().changeThemeMode(
@@ -87,8 +87,8 @@ class _ToggleThemeIconState extends State<ToggleThemeIcon>
           color: AppCalculator.isDarkMode() ? Colors.white : Colors.black87,
         ),
         margin: AppPaddings.all_10,
-        width: 50.sp,
-        height: 50.sp,
+        width: dimension,
+        height: dimension,
         alignment: Alignment.center,
         duration: AppDurations.duration_500ms,
         child: Lottie.asset(

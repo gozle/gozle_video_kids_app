@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
+import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 
 class ResponsiveHelper {
-  static late final Devices responsiveVal;
+  static Devices? responsiveVal;
+
   static void init(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    if (size.height < 600) {
+    if (responsiveVal != null) return;
+    final size = MediaQuery.sizeOf(context)..log();
+    if (size.height <= 600) {
+      'itsPhone'.log();
       responsiveVal = Devices.phone;
     } else {
       responsiveVal = Devices.tablet;

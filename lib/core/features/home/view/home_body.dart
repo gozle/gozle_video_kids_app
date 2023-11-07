@@ -9,6 +9,7 @@ import 'package:gozle_video_kids_v1/utilities/constants/vars/spacer.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/enums.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 
 class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
@@ -47,7 +48,10 @@ class _HomeBodyState extends State<HomeBody> {
     'body rebuild'.log();
 //padding couse of body and app bar in stack. 65 height of app bar
     return Padding(
-      padding: EdgeInsets.only(top: 65.h),
+      padding: ResponsiveHelper.solve(
+        EdgeInsets.only(top: 65.h),
+        EdgeInsets.only(top: 50.h),
+      ),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
           previouseState = previous.apiState;
@@ -61,12 +65,6 @@ class _HomeBodyState extends State<HomeBody> {
               },
             );
           if (state.apiState == HomeAPIState.init) return SizedBox();
-          if (state.apiState == HomeAPIState.loading)
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.appred,
-              ),
-            );
           return RefreshIndicator(
             onRefresh: () async {
               bloc.init(forRefresh: true);
@@ -77,13 +75,16 @@ class _HomeBodyState extends State<HomeBody> {
                 controller: scrollController,
                 slivers: [
                   HomeProductBuilder(
-                    modelList: state.videos,
+                    modelList: state.apiState == HomeAPIState.loading
+                        ? null
+                        : state.videos,
                   ),
                   AppSpacing.vertical_20.toSliverBox,
                   if (state.apiState == HomeAPIState.loadingMore)
                     Center(
                       child: CircularProgressIndicator(
                         color: AppColors.appred,
+                        
                       ),
                     ).toSliver(),
                   if (previouseState == HomeAPIState.errorMore &&

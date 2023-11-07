@@ -17,6 +17,7 @@ import 'package:gozle_video_kids_v1/utilities/constants/assets_path.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/shimmer.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
+import 'package:gozle_video_kids_v1/utilities/services/responsive_helper.dart';
 
 class HomeVideoWidget extends StatefulWidget {
   const HomeVideoWidget({
@@ -49,11 +50,11 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
   }
 
   late MyTextTheme textTheme = context.textTheme;
-  late final model = widget.model;
-  late final isLoading = model == null;
 
   @override
   Widget build(BuildContext context) {
+    final model = widget.model;
+    final isLoading = model == null;
     return GestureDetector(
       onTap: () {
         if (isLoading || appRouter.location == AppRoutes.videoScreen) return;
@@ -76,9 +77,12 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                     child: ClipRRect(
                       borderRadius: AppBorderRadiuses.border_15,
                       child: isLoading
-                          ? MyShimerPlaceHolder()
+                          ? MyShimerPlaceHolder(
+                              height: double.infinity,
+                              width: double.infinity,
+                            )
                           : CachedNetworkImage(
-                              imageUrl: model!.image,
+                              imageUrl: model.image,
                               fit: BoxFit.cover,
                               errorWidget: (context, url, error) {
                                 return Image.asset(
@@ -103,7 +107,9 @@ class _HomeVideoWidgetState extends State<HomeVideoWidget> {
                           color: AppColors.black28,
                           borderRadius: AppBorderRadiuses.border_5,
                         ),
-                        margin: EdgeInsets.only(bottom: 11.h, right: 15.w),
+                        margin: ResponsiveHelper.solve(
+                            EdgeInsets.only(bottom: 11.h, right: 15.w),
+                            EdgeInsets.only(bottom: 5.h, right: 10.w)),
                         alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(
                             horizontal: 11.w, vertical: 4.h),

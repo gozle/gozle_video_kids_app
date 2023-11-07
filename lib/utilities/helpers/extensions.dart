@@ -7,6 +7,7 @@ import 'dart:developer' as devtools show log;
 
 import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/configs/theme/my_text_theme.dart';
+import 'package:gozle_video_kids_v1/utilities/services/calculator.dart';
 
 extension Log on Object? {
   void log({StackTrace? stackTrace, String? message}) => devtools.log(
@@ -25,7 +26,9 @@ extension SliverExtentions on Widget {
 extension ContextExtensions on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this)!;
   ThemeData get theme => Theme.of(this);
-  MyTextTheme get textTheme => Theme.of(this).extension<MyTextTheme>()!;
+  MyTextTheme get textTheme => AppCalculator.isDarkMode()
+      ? MyTextTheme.darkTheme()
+      : MyTextTheme.lightTheme();
 }
 
 extension DurationExtensions on Duration {

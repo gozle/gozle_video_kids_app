@@ -4,12 +4,14 @@ class AppState extends Equatable {
   const AppState({
     this.lang = 'ru',
     this.themeMode = ThemeMode.system,
+    this.autoPlayEnable = true,
     required this.state,
   });
   final APIState state;
   final String lang;
+  final bool autoPlayEnable;
   final ThemeMode themeMode;
 
   @override
-  List<Object> get props => [themeMode, lang, state];
+  List<Object> get props => [themeMode, lang, state, autoPlayEnable];
 }

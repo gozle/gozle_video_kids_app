@@ -1,7 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gozle_video_kids_v1/app/cubit/app_cubit.dart';
+import 'package:gozle_video_kids_v1/core/features/home/bloc/home_bloc.dart';
+import 'package:gozle_video_kids_v1/core/features/video/video_service.dart';
 import 'package:gozle_video_kids_v1/core/models/home_video_model/home_video_model.dart';
+import 'package:gozle_video_kids_v1/utilities/configs/router/router.dart';
 import 'package:gozle_video_kids_v1/utilities/constants/vars/durations.dart';
 import 'package:gozle_video_kids_v1/utilities/helpers/extensions.dart';
 import 'package:gozle_video_kids_v1/utilities/services/system_chrome_helper/system_chrome_helper.dart';
@@ -13,7 +18,6 @@ class VideoCubit extends Cubit<VideoState> {
   VideoCubit(this.model) : super(VideoState.defState(model));
   final HomeVideoModel model;
   int hiddingId = 0;
-  bool isSkipTap = false;
   final position = ValueNotifier<Duration>(Duration.zero);
 
   late WorldVideoPlayerController videoController =
@@ -138,6 +142,7 @@ class VideoCubit extends Cubit<VideoState> {
     final mainVideoCon = videoController.videoPlayerController;
     final val = mainVideoCon.value;
     position.value = mainVideoCon.value.position;
+    autopSkip();
     this.setPlaying();
     this.setBuffering(val.isBuffering..log());
   }
@@ -145,5 +150,27 @@ class VideoCubit extends Cubit<VideoState> {
   void myEmit(VideoState state) {
     if (isClosed) return;
     emit(state);
+  }
+
+  void autopSkip() {
+    final context = appRouter.currentContext;
+    if (!context.read<AppCubit>().state.autoPlayEnable) return;
+    final conVal = videoController.videoPlayerController.value;
+    if (conVal.position.inMilliseconds >=
+        (conVal.duration.inMilliseconds - 100)) {
+      Future.delayed(AppDurations.duration_250ms, () {
+        final index = findIndex();
+        final models = context.read<HomeBloc>().state.videos;
+        if (index + 1 == models.length) return;
+        reInit(models[index + 1]);
+      });
+    }
+  }
+
+  int findIndex() {
+    final context = appRouter.currentContext;
+    final pkies =
+        context.read<HomeBloc>().state.videos.map((e) => e.pk).toList();
+    return pkies.indexOf(state.currentVideo.pk);
   }
 }

@@ -48,13 +48,28 @@ class AppCubit extends Cubit<AppState> {
     emit(AppState(state: APIState.loading));
     final lang = await _localStorage.getLang();
     final themeMode = await _localStorage.getThemeMode();
+    final autoPlay = await _localStorage.getAutoPlay();
     emit(
       AppState(
         lang: lang,
         themeMode: (themeMode)..log(message: 'Current theme mode'),
         state: APIState.succses,
+        autoPlayEnable: autoPlay,
       ),
     );
+  }
+
+  Future<void> changeAutoPlayEnable() async {
+    final isEnable = !state.autoPlayEnable;
+    emit(
+      AppState(
+        state: APIState.succses,
+        lang: state.lang,
+        themeMode: state.themeMode,
+        autoPlayEnable: isEnable,
+      ),
+    );
+    _localStorage.saveAutoPlayEnable(isEnable);
   }
 }
 

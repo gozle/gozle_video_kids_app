@@ -65,8 +65,9 @@ class _HomeBodyState extends State<HomeBody> {
           if (state.apiState == HomeAPIState.init) return SizedBox();
           if (state.apiState == HomeAPIState.loading)
             return Center(
-              child: SizedBox.square(
-                dimension: ResponsiveHelper.solve(25.sp, 35.sp),
+              child: Container(
+                height: ResponsiveHelper.solve(40.sp, 50.sp),
+                width: ResponsiveHelper.solve(40.sp, 50.sp),
                 child: CircularProgressIndicator(
                   color: AppColors.appred,
                 ),
@@ -87,8 +88,10 @@ class _HomeBodyState extends State<HomeBody> {
                   AppSpacing.vertical_20.toSliverBox,
                   if (state.apiState == HomeAPIState.loadingMore)
                     Center(
-                      child: SizedBox.square(
-                        dimension: ResponsiveHelper.solve(25.sp, 35.sp),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10.h),
+                        height: ResponsiveHelper.solve(40.sp, 50.sp),
+                        width: ResponsiveHelper.solve(40.sp, 50.sp),
                         child: CircularProgressIndicator(
                           color: AppColors.appred,
                         ),

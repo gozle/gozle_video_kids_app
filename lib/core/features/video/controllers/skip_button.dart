@@ -40,7 +40,6 @@ class VideoSkipButton extends StatelessWidget {
                 return;
               }
               if (isDisabled) return;
-              videoCubit.isSkipTap = true;
               if (forNext) {
                 index++;
               } else {

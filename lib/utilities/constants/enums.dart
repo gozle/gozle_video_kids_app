@@ -29,4 +29,5 @@ enum LocalKeys {
   lang,
   themeMode,
   isFirstTime,
+  AutoPlay,
 }

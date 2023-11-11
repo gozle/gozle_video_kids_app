@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gozle_video_kids_v1/core/features/video/controllers/auto_play_check_box.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/play_pause_button.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/skip_button.dart';
 import 'package:gozle_video_kids_v1/core/features/video/controllers/unlock_widget.dart';
@@ -89,6 +90,12 @@ class GozleVideoKidsControllers extends StatelessWidget {
                         overflow: TextOverflow.clip,
                       ),
                     ),
+                  ),
+                  AppSpacing.horizontal_20,
+                  AnimatedOpacity(
+                    opacity: isNotVisibleAndLocked ? 1 : 0,
+                    duration: AppDurations.duration_150ms,
+                    child: AutoPlayCheckBox(),
                   ),
                   AppSpacing.horizontal_20,
                   AnimatedOpacity(

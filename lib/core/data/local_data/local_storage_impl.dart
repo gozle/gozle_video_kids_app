@@ -38,4 +38,16 @@ class LocalStorageImpl extends LocalStorage {
   Future<void> switchFirstTiem() async {
     await client.write(key: LocalKeys.isFirstTime.name, value: 'false');
   }
+
+  Future<void> saveAutoPlayEnable(bool val) async {
+    await client.write(
+      key: LocalKeys.AutoPlay.name,
+      value: val.toString(),
+    );
+  }
+
+  Future<bool> getAutoPlay() async {
+    final val = await client.read(key: LocalKeys.AutoPlay.name);
+    return bool.parse(val ?? 'true');
+  }
 }
